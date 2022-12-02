@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -21,11 +22,13 @@ func main() {
 
 	lines := strings.Split(string(input), "\r\n")
 
+	total_per_elf := []int{}
 	max_calories := 0.0
 	calories := 0
 	for _, line := range lines {
 		if len(line) == 0 {
 			max_calories = math.Max(float64(max_calories), float64(calories))
+			total_per_elf = append(total_per_elf, calories)
 			calories = 0
 			continue
 		}
@@ -33,5 +36,8 @@ func main() {
 		check(err)
 		calories += int(calorie)
 	}
-	fmt.Println(max_calories)
+	sort.Ints(total_per_elf)
+	count := len(total_per_elf)
+	fmt.Println("part 1: ", max_calories)
+	fmt.Println("part 2: ", total_per_elf[count-1]+total_per_elf[count-2]+total_per_elf[count-3])
 }
