@@ -38,19 +38,24 @@ func main() {
 		moves, _ := strconv.Atoi(instructions[1])
 		from, _ := strconv.Atoi(instructions[3])
 		to, _ := strconv.Atoi(instructions[5])
-		for i := 0; i < moves; i++ {
-			pop := len(crates[from]) - 1
-			crates[to] = append(crates[to], crates[from][pop])
-			crates[from] = crates[from][:pop]
+		if false { // part 1
+			for i := 0; i < moves; i++ {
+				pop := len(crates[from]) - 1
+				crates[to] = append(crates[to], crates[from][pop])
+				crates[from] = crates[from][:pop]
+			}
+		} else { // part 2
+			pop := len(crates[from])
+			crates[to] = append(crates[to], crates[from][pop-moves:pop]...)
+			crates[from] = crates[from][:pop-moves]
 		}
 	}
 
-	part1 := ""
+	result := ""
 	for i := 1; i < len(crates); i++ {
 		pop := len(crates[i]) - 1
-		part1 += crates[i][pop]
+		result += crates[i][pop]
 	}
 
-	fmt.Println("part 1: ", part1)
-	fmt.Println("part 2: ", 0)
+	fmt.Println("solution: ", result)
 }
