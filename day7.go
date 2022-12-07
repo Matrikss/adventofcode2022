@@ -84,4 +84,17 @@ func main() {
 	}
 
 	fmt.Println("Part 1: ", part1)
+
+	need_to_free := 30000000 - (70000000 - root.size)
+
+	min := 30000000
+	for _, no := range dirs {
+		if no.size >= need_to_free {
+			if no.size < min {
+				min = no.size
+			}
+		}
+	}
+
+	fmt.Println("Part 2: ", min)
 }
