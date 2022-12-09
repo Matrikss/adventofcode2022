@@ -50,40 +50,6 @@ func move_head(corda *knot, x_inc float64, y_inc float64) {
 	}
 }
 
-func print_visits(positions map[string]int) {
-	fmt.Println(positions)
-	for i := 0; i < START_X*2; i++ {
-		for j := 0; j < START_Y*2; j++ {
-			val := positions[fmt.Sprintf("%d %d", i, j)]
-			if val > 0 {
-				fmt.Print("#")
-			} else {
-				fmt.Print("_")
-			}
-		}
-		fmt.Println()
-	}
-}
-
-func print_snapshot(corda [10]*knot) {
-	fmt.Println("snapshot")
-	var mapa [START_X * 2][START_Y * 2]string
-	for i := CORDA - 1; i >= 0; i-- {
-		mapa[int(corda[i].head_x)][int(corda[i].head_y)] = fmt.Sprintf("%d", i)
-	}
-	for i := 0; i < START_X*2; i++ {
-		for j := 0; j < START_Y*2; j++ {
-			char := mapa[i][j]
-			if char == "" {
-				fmt.Print("_")
-			} else {
-				fmt.Print(char)
-			}
-		}
-		fmt.Println()
-	}
-}
-
 func main() {
 
 	input, _ := os.ReadFile("./input/input9.txt")
@@ -115,6 +81,6 @@ func main() {
 		}
 	}
 
-	fmt.Println("Part 1: ", len(corda[9].tail_positions)) //6498
-	fmt.Println("Part 2: ", 0)                            //2531
+	fmt.Println("Part 1: ", len(corda[1].tail_positions))
+	fmt.Println("Part 2: ", len(corda[9].tail_positions))
 }
