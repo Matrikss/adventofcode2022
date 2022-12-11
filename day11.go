@@ -22,43 +22,83 @@ func main() {
 
 	monkeys := []monkey{
 		monkey{
-			[]int{79, 98},
+			[]int{56, 52, 58, 96, 70, 75, 72},
 			func(worry int) (int, int) {
-				new := relax(worry * 19)
-				if new%23 == 0 {
+				new := relax(worry * 17)
+				if new%11 == 0 {
 					return 2, new
 				} else {
 					return 3, new
 				}
 			}, 0},
 		monkey{
-			[]int{54, 65, 75, 74},
+			[]int{75, 58, 86, 80, 55, 81},
 			func(worry int) (int, int) {
-				new := relax(worry + 6)
-				if new%19 == 0 {
-					return 2, new
+				new := relax(worry + 7)
+				if new%3 == 0 {
+					return 6, new
 				} else {
-					return 0, new
+					return 5, new
 				}
 			}, 0},
 		monkey{
-			[]int{79, 60, 97},
+			[]int{73, 68, 73, 90},
 			func(worry int) (int, int) {
 				new := relax(worry * worry)
-				if new%13 == 0 {
+				if new%5 == 0 {
 					return 1, new
+				} else {
+					return 7, new
+				}
+			}, 0},
+		monkey{
+			[]int{72, 89, 55, 51, 59},
+			func(worry int) (int, int) {
+				new := relax(worry + 1)
+				if new%7 == 0 {
+					return 2, new
+				} else {
+					return 7, new
+				}
+			}, 0},
+		monkey{
+			[]int{76, 76, 91},
+			func(worry int) (int, int) {
+				new := relax(worry * 3)
+				if new%19 == 0 {
+					return 0, new
 				} else {
 					return 3, new
 				}
 			}, 0},
 		monkey{
-			[]int{74},
+			[]int{88},
 			func(worry int) (int, int) {
-				new := relax(worry + 3)
-				if new%17 == 0 {
-					return 0, new
+				new := relax(worry + 4)
+				if new%2 == 0 {
+					return 6, new
 				} else {
+					return 4, new
+				}
+			}, 0},
+		monkey{
+			[]int{64, 63, 56, 50, 77, 55, 55, 86},
+			func(worry int) (int, int) {
+				new := relax(worry + 8)
+				if new%13 == 0 {
+					return 4, new
+				} else {
+					return 0, new
+				}
+			}, 0},
+		monkey{
+			[]int{79, 58},
+			func(worry int) (int, int) {
+				new := relax(worry + 6)
+				if new%17 == 0 {
 					return 1, new
+				} else {
+					return 5, new
 				}
 			}, 0},
 	}
@@ -70,7 +110,6 @@ func main() {
 			monkeys[i].inspections += len(items)
 			for _, item := range items {
 				throw_to, new_worry := monkeys[i].operation(item)
-				//println("monkey", i, "throws", item, "as", new_worry, "to", throw_to)
 				monkeys[throw_to].worry_levels = append(monkeys[throw_to].worry_levels, new_worry)
 			}
 		}
