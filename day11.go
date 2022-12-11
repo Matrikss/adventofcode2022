@@ -15,8 +15,19 @@ type monkey struct {
 }
 
 func relax(worry int) int {
-	return int(math.Floor(float64(worry) / 3))
+	if false {
+		// PART 1
+		return int(math.Floor(float64(worry) / 3))
+	} else {
+		// PART 2
+		// I don't really fully understand this black magic 😅
+		common := 11 * 3 * 5 * 7 * 19 * 2 * 13 * 17
+		return worry % common
+	}
 }
+
+const ROUNDS_PART1 = 20
+const ROUNDS_PART2 = 10000
 
 func main() {
 
@@ -103,7 +114,7 @@ func main() {
 			}, 0},
 	}
 
-	for round := 1; round <= 20; round++ {
+	for round := 1; round <= ROUNDS_PART2; round++ {
 		for i := 0; i < len(monkeys); i++ {
 			items := monkeys[i].worry_levels
 			monkeys[i].worry_levels = []int{}
@@ -122,5 +133,5 @@ func main() {
 	sort.Ints(monkey_business)
 	count := len(monkey_business)
 
-	fmt.Println("Part 1:", monkey_business[count-1]*monkey_business[count-2])
+	fmt.Println("Solution:", monkey_business[count-1]*monkey_business[count-2])
 }
