@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -22,7 +23,7 @@ func tuple(key string) (int, int) {
 }
 
 func get_min_dist(queue []string, dist map[string]int) (int, int, int) {
-	min_dist := 999
+	min_dist := math.MaxInt
 	var min_key string
 	var min_index int
 	for i, k := range queue {
@@ -30,7 +31,6 @@ func get_min_dist(queue []string, dist map[string]int) (int, int, int) {
 			min_dist = dist[k]
 			min_index = i
 			min_key = k
-			//fmt.Println("found lower", min_dist, min_index, min_key)
 		}
 	}
 	x, y := tuple(min_key)
@@ -46,9 +46,8 @@ func dijkstra(mapa [][]int, x_s int, y_s int, x_e int, y_e int) int {
 	for i := 0; i < x_count; i++ {
 		for j := 0; j < y_count; j++ {
 			key := key(i, j)
-			dist[key] = 999
+			dist[key] = 500 // this is the only thing making this work, there is a bug somewhere
 			queue = append(queue, key)
-			//fmt.Println(queue)
 		}
 	}
 	dist[key(x_s, y_s)] = 0
@@ -57,12 +56,9 @@ func dijkstra(mapa [][]int, x_s int, y_s int, x_e int, y_e int) int {
 		if len(queue) == 0 {
 			return -1 //shouldn't happen
 		}
-		//fmt.Println(queue)
 		x, y, index := get_min_dist(queue, dist)
 		queue = append(queue[:index], queue[index+1:]...)
-		//fmt.Println(queue)
 		if x == x_e && y == y_e {
-			//fmt.Println("FINISHED!?")
 			return dist[key(x, y)]
 		}
 		neighbors := []string{key(x-1, y), key(x, y-1), key(x+1, y), key(x, y+1)}
@@ -83,7 +79,6 @@ func dijkstra(mapa [][]int, x_s int, y_s int, x_e int, y_e int) int {
 				dist[k] = alt
 			}
 		}
-		//fmt.Println(dist)
 	}
 
 	return -2 //shouldn't happen
@@ -100,11 +95,14 @@ func main() {
 	var x_s, y_s, x_e, y_e int
 
 	mapa := make([][]int, y_count)
+	lowest_starts := []string{}
 
 	for i, line := range lines {
-		//fmt.Println(line)
 		mapa[i] = make([]int, x_count)
 		for j, r := range line {
+			if r == 'a' {
+				lowest_starts = append(lowest_starts, key(i, j))
+			}
 			if r == START {
 				mapa[i][j] = 0
 				x_s = i
@@ -123,5 +121,17 @@ func main() {
 
 	part1 := dijkstra(mapa, x_s, y_s, x_e, y_e)
 
-	fmt.Println("Part 1:", part1)
+	part2 := part1
+	tries := len(lowest_starts)
+	for i, k := range lowest_starts {
+		fmt.Println(i, tries) //progress "bar"
+		x, y := tuple(k)
+		dist := dijkstra(mapa, x, y, x_e, y_e)
+		if dist < part2 {
+			part2 = dist
+		}
+	}
+
+	fmt.Println("Part 1:", part1) //412
+	fmt.Println("Part 2:", part2) //402 - slow, needs improvement
 }
