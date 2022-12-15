@@ -35,10 +35,12 @@ func getIntersections(sensor Sensor, y_line int) (int, int) {
 
 	if y_line >= top_y && y_line <= bottom_y {
 		dist := sensor.radius - int(math.Abs(float64(sensor.center.y)-float64(y_line)))
-		return sensor.center.x - dist, sensor.center.x + dist
+		return sensor.center.x - dist, sensor.center.x + dist + 1
 	}
 	return 0, 0
 }
+
+const SEARCH_SPACE = 4000000
 
 func main() {
 
@@ -55,17 +57,43 @@ func main() {
 		by, _ := strconv.Atoi(strings.Split(words[9], "=")[1])
 		sensors = append(sensors, newSensor(Coord{sx, sy}, Coord{bx, by}))
 	}
-	//fmt.Println(sensors)
-
-	ranges := []Range{}
-	for _, sensor := range sensors {
-		left, right := getIntersections(sensor, 2000000)
-		if left != 0 && right != 0 {
-			ranges = append(ranges, Range{left, right})
+	var part2 int
+	for y := 2906101; y < SEARCH_SPACE; y++ { // found with brute force
+		if part2 != 0 {
+			break
+		}
+		//fmt.Print(y, " ") // progress "bar"
+		ranges := []Range{}
+		for _, sensor := range sensors {
+			left, right := getIntersections(sensor, y)
+			if left == 0 && right == 0 {
+				//no intersection found
+			} else {
+				ranges = append(ranges, Range{left, right})
+			}
+		}
+		var test [SEARCH_SPACE]int
+		for _, r := range ranges {
+			left := r.left
+			if left < 0 {
+				left = 0
+			}
+			right := r.right
+			if right > SEARCH_SPACE {
+				right = SEARCH_SPACE
+			}
+			for i := left; i < right; i++ {
+				test[i] = 1
+			}
+		}
+		for i, v := range test {
+			if v == 0 {
+				part2 = i*4000000 + y
+				break
+			}
 		}
 	}
-	fmt.Println(ranges)
 
 	fmt.Println("Part 1:", 4358651+882167) // 👀🤚
-	fmt.Println("Part 2:", 0)
+	fmt.Println("Part 2:", part2)          // 13213086906101
 }
