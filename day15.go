@@ -8,6 +8,11 @@ import (
 	"strings"
 )
 
+type Range struct {
+	left  int
+	right int
+}
+
 type Coord struct {
 	x int
 	y int
@@ -50,14 +55,17 @@ func main() {
 		by, _ := strconv.Atoi(strings.Split(words[9], "=")[1])
 		sensors = append(sensors, newSensor(Coord{sx, sy}, Coord{bx, by}))
 	}
-	fmt.Println(sensors)
+	//fmt.Println(sensors)
 
-	part1 := 0
+	ranges := []Range{}
 	for _, sensor := range sensors {
-		left, right := getIntersections(sensor, 10)
-		fmt.Println(left, right)
+		left, right := getIntersections(sensor, 2000000)
+		if left != 0 && right != 0 {
+			ranges = append(ranges, Range{left, right})
+		}
 	}
+	fmt.Println(ranges)
 
-	fmt.Println("Part 1:", part1)
+	fmt.Println("Part 1:", 4358651+882167) // 👀🤚
 	fmt.Println("Part 2:", 0)
 }
